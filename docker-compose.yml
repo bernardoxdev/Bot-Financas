@@ -1,0 +1,52 @@
+version: "3.9"
+
+services:
+  bot:
+    build: .
+    container_name: bot-financas
+    restart: always
+    env_file:
+      - .env
+    depends_on:
+      - mongo
+      - postgres
+    networks:
+      - thinq_network
+
+  mongo:
+    image: mongo:7
+    container_name: mongo-financas
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME:
+      MONGO_INITDB_ROOT_PASSWORD:
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - financas_network
+
+  postgres:
+    image: postgres:16
+    container_name: postgres-financas
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER:
+      POSTGRES_PASSWORD:
+      POSTGRES_DB: financas_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - financas_network
+
+volumes:
+  mongo_data:
+  postgres_data:
+
+networks:
+  financas_network:
+    name: financas_network
+    driver: bridge
