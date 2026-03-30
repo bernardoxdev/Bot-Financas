@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
   bot:
     build: .
@@ -11,7 +9,7 @@ services:
       - mongo
       - postgres
     networks:
-      - financas_networks
+      - financas_network
 
   mongo:
     image: mongo:7
@@ -49,5 +47,4 @@ volumes:
 
 networks:
   financas_network:
-    name: financas_network
     driver: bridge
